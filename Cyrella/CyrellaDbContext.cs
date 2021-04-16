@@ -16,7 +16,6 @@ namespace Cyrella
         public CyrellaDbContext(DbContextOptions dbContextOptions) 
             : base(dbContextOptions)
         {
-
         }
     }
 }
