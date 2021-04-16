@@ -13,10 +13,13 @@ namespace Cyrella.Model
         public string ItemComDefeito { get; set; }
         public string DescricaoDefeito { get; set; }
         public string Comodo { get; set; }
-        public List<string> UrlsImagens { get; set; }
+        
+
+        public ICollection<ImagemAgendamento> ImagensAnexas { get; set; }
+
+
         public AreaAssistencia AreaDeAssistencia { get; set; }
         public bool Recorrencia { get; set; }
-
 
         public enum AreaAssistencia
         {
