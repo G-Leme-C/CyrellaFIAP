@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cyrella.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cyrella.Controllers
 {
@@ -28,6 +29,18 @@ namespace Cyrella.Controllers
             return agendamentos;
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<AgendamentoManutencao> GetById(int id)
+        {
+            var agendamento = _cyrellaDbContext
+                .AgendamentoManutencao
+                .Include(a => a.ImagensAnexas)
+                .FirstOrDefault(agendamento => agendamento.Id == id);
+
+            return agendamento;
+        }
+
+        [HttpPost]
         public ActionResult Post([FromBody] AgendamentoManutencao agendamento)
         {
             try
@@ -41,6 +54,51 @@ namespace Cyrella.Controllers
             catch (Exception)
             {
                 return BadRequest();
+                throw;
+            }
+        }
+
+        [HttpPut]
+        public ActionResult Put([FromBody] AgendamentoManutencao agendamento)
+        {
+            try
+            {
+                var agendamentoUpdate = _cyrellaDbContext.Attach(agendamento);
+                agendamentoUpdate.State = EntityState.Modified;
+
+                _cyrellaDbContext.SaveChanges();
+                return Ok();
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                if (id <= 0) return BadRequest();
+
+                var agendamento = _cyrellaDbContext
+                    .AgendamentoManutencao.Find(id);
+                
+                if (agendamento == null) return NotFound();
+
+                var imagens = _cyrellaDbContext.ImagensAgendamentos
+                    .Where(i => i.AgendamentoManutencaoId == id).ToList();
+
+                _cyrellaDbContext.ImagensAgendamentos.RemoveRange(imagens);
+                _cyrellaDbContext.AgendamentoManutencao.Remove(agendamento);
+
+                _cyrellaDbContext.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }
