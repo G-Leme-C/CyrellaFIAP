@@ -11,6 +11,10 @@ namespace Cyrella
     {
         public DbSet<AgendamentoManutencao> AgendamentoManutencao { get; set; }
         public DbSet<ImagemAgendamento> ImagensAgendamentos { get; set; }
+        public DbSet<Empreendimento> Empreendimentos { get; set; }
+        public DbSet<Afetacao> Afetacoes { get; set; }
+        public DbSet<FaseObra> FasesObra { get; set; }
+        public DbSet<ItemPersonalizacao> ItensPersonalizacao { get; set; }
 
 
         public CyrellaDbContext(DbContextOptions dbContextOptions) 

@@ -48,7 +48,6 @@ namespace Cyrella.Controllers
                 _cyrellaDbContext.Add(agendamento);
                 _cyrellaDbContext.SaveChanges();
 
-//                return Created(new Uri("api/agendamento"), agendamento);
                 return Created("", agendamento);
             }
             catch (Exception)
